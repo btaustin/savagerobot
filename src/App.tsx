@@ -339,6 +339,18 @@ function App() {
   const [expandedTrack, setExpandedTrack] = useState<number | null>(null)
 
   const toggleTrack = (id: number) => {
+    if (expandedTrack !== id) {
+      const track = tracks.find(t => t.id === id)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (track && (window as any).gtag) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window as any).gtag('event', 'expand_track_details', {
+          event_category: 'engagement',
+          event_label: track.title,
+          track_title: track.title
+        })
+      }
+    }
     setExpandedTrack(expandedTrack === id ? null : id)
   }
 
