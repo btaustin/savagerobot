@@ -263,7 +263,7 @@ I fixed it, baby
 Nobody knows
 (Keep it secret, keep it safe)
 Just clear the cache.`,
-    spotifyId: "",
+    spotifyId: "4BGWCitLSeqgSV1V50G8RE",
     releaseDate: "2025-11-26"
   },
   {
@@ -330,7 +330,7 @@ Yeah, I blame it on Doug (He didn't use a linter)
 I blame it on Doug (He hardcoded the credentials!) 
 Doug, you’re the worst.
 `,
-    spotifyId: "",
+    spotifyId: "59pPfLXenntlPRQuYXdkfd",
     releaseDate: "2025-11-26"
   }
 ]
