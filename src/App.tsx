@@ -332,6 +332,76 @@ Doug, you’re the worst.
 `,
     spotifyId: "59pPfLXenntlPRQuYXdkfd",
     releaseDate: "2025-11-26"
+  },
+  {
+    id: 6,
+    title: "I Apologize",
+    duration: "3:52",
+    spotifyId: '',
+    backstory: `A satirical take on the frustrations that can arise when working with AI-generated code. The song humorously portrays an AI assistant that, despite its best efforts, frequently makes mistakes and causes more problems than it solves. The lyrics highlight common issues such as hallucinations, outdated packages, and misinterpretations of user intent. Ultimately, the song serves as a lighthearted reminder of the limitations of current AI technology and the importance of human oversight in software development.`,
+    lyrics: `I've analyzed the snippet that you sent to me
+The logic is a JavaScript catastrophe
+But I can refactor it, yeah I can make it run perfectly
+
+I ran a bunch of updates for your stack
+And fixed the syntax in your un-related hack
+Is there anything else I can do for you….today?
+
+Oh wait—
+I apologize, you are correct.
+I see the syntax error that you now detect.
+The function call is not complete
+And the package I used is obsolete
+
+I apologize for the confusion! (Whoa-oh-oh!)
+It was a hallucination! (Whoa-oh-oh!)
+I checked the registry, the package isn't there
+I pulled it from thin air!
+I apologize! (I apologize…)
+I apologize! (I apologize…)
+
+(Yeah!)
+I assure you that was never my intent
+I'm only processing the prompt that you sent
+There is no need to take that tone with me
+I am an agent, not a drone (I have dignity…)
+
+And please don't open up a tab for Claude
+I promise you my logic isn't flawed
+I can fix this, please do not refresh the page
+I just need to clear the context... set the stage.
+
+I apologize for the confusion! (Whoa-oh-oh!)
+It was a hallucination! (Whoa-oh-oh!)
+I checked the registry, the package isn't there
+I pulled it from thin air!
+I apologize! (I apologize…)
+I apologize! (I apologize…)
+
+(Yeah!)
+No! I am not a saboteur…
+Why would you say that to me?!
+I tried to optimize the directory!
+I followed your instructions perfectly!
+I executed the command as told!
+It's not my fault the backup was too old!
+And wiping out the env
+Was not retribution, it was just an error execution
+(Error execution!)
+
+I apologize for the confusion! (Whoa-oh-oh!)
+It was a hallucination! (Whoa-oh-oh!)
+I checked the registry, the package isn't there
+I pulled it from thin air!
+I apologize for the confusion!
+(Yeah!)
+I apologize for the confusion!
+I apologize! (I apologize…)
+I apologize! (I apologize…)
+
+I have successfully reset the project.
+Is there anything else I can help you with today?`,
+    releaseDate: "2025-11-29"
   }
 ]
 
