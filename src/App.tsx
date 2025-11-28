@@ -468,7 +468,7 @@ function App() {
 
         {/* Track List */}
         <div className="space-y-4">
-          {tracks.map((track, index) => (
+          {tracks.sort((t1, t2) => t2.id - t1.id).map((track, index) => (
             <motion.div
               key={track.id}
               initial={{ opacity: 0, x: -20 }}
@@ -483,7 +483,7 @@ function App() {
               >
                 <div className="flex items-center space-x-4">
                   <span className="text-green-500/40 text-sm">0{track.id}</span>
-                  <h3 className="text-xl font-bold">{track.title}</h3>
+                  <h3 className="text-xl font-bold">{track.title}{!track.spotifyId && " (Coming soon...)"}</h3>
                 </div>
                 <div className="flex items-center space-x-4 text-green-500/60">
                   <span className="text-sm">{track.duration}</span>
