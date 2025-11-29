@@ -337,7 +337,7 @@ Doug, you’re the worst.
     id: 6,
     title: "I Apologize",
     duration: "3:52",
-    spotifyId: '',
+    spotifyId: '1AYSFfu9PMnkeDJaov5MLZ',
     backstory: `A satirical take on the frustrations that can arise when working with AI-generated code. The song humorously portrays an AI assistant that, despite its best efforts, frequently makes mistakes and causes more problems than it solves. The lyrics highlight common issues such as hallucinations, outdated packages, and misinterpretations of user intent. Ultimately, the song serves as a lighthearted reminder of the limitations of current AI technology and the importance of human oversight in software development.`,
     lyrics: `I've analyzed the snippet that you sent to me
 The logic is a JavaScript catastrophe
