@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown, ChevronUp, Play, Info, Disc, Zap } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import { ChevronDown, Music2, FileText, Radio, Volume2, Cpu, Binary, CircuitBoard } from 'lucide-react'
 
 interface Track {
   id: number
@@ -197,9 +197,9 @@ Wish that I could just rewind (just rewind)`,
     lyrics: `(Yeah, yeah)
 (Oh-oh-oh)
 (Don't look at the logs, baby)
-Let’s go!
+Let's go!
 
-Monday morning and the dashboard’s red
+Monday morning and the dashboard's red
 The production server is completely dead (So dead!)
 The VP is sweating, tearing out his hair
 Panic in the Slack channel everywhere
@@ -207,14 +207,14 @@ Then I step in with a sly grin
 Type a few commands and I get the win
 (I get the win…)
 
-They’re cheering my name, popping the champagne
-Saying "How’d you find that glitch in the main?"
+They're cheering my name, popping the champagne
+Saying "How'd you find that glitch in the main?"
 My palms are sweaty, my heart is a drum
 'Cause I know exactly where that bug came from
 
-I’m the firefighter, but I hold the match
-I’m the only reason that we needed a patch
-I’m your hero, baby, saving the day
+I'm the firefighter, but I hold the match
+I'm the only reason that we needed a patch
+I'm your hero, baby, saving the day
 But I wrote the bad code that made it this way
 
 It was late last night, I was tired and weak
@@ -230,30 +230,30 @@ They pat my back, say "You're a genius, son"
 I smile and nod while I hold my breath
 Scared that a git blame will bleed me to death
 
-I’m the firefighter, but I hold the match
-I’m the only reason that we needed a patch
-I’m your hero, baby, saving the day
+I'm the firefighter, but I hold the match
+I'm the only reason that we needed a patch
+I'm your hero, baby, saving the day
 But I wrote the bad code that made it this way
 
 If they check the timestamps
 If they read the source
-They’ll see it was me
+They'll see it was me
 With no remorse
 (Don't audit me, baby)
-I promise I’ll do better
-I’ll run the tests
-Just please don’t realize
+I promise I'll do better
+I'll run the tests
+Just please don't realize
 I made this mess!
 (Yeah!)
 
-I’m the firefighter, but I hold the match (I hold the match!)
-I’m the only reason that we needed a patch
-I’m your hero, baby, saving the day
+I'm the firefighter, but I hold the match (I hold the match!)
+I'm the only reason that we needed a patch
+I'm your hero, baby, saving the day
 But I wrote the bad code that made it this way
 
-I’m the firefighter, but I hold the match
-I’m the only reason that we needed a patch
-I’m your hero, baby, saving the day
+I'm the firefighter, but I hold the match
+I'm the only reason that we needed a patch
+I'm your hero, baby, saving the day
 But I wrote the bad code that made it this way
 (Yeah, I wrote the bad code that made it this way)
 
@@ -284,30 +284,30 @@ Of the man who turned this codebase into a disgrace
 He committed this garbage three years ago 
 Then he cashed out his options and he let it go 
 
-It’s all because of Doug! He left me with this bug! 
+It's all because of Doug! He left me with this bug! 
 He pulled the ethernet plug 
 And gave a little shrug 
-He’s sipping on a latte at a new job now 
-While I’m trying to fix this (Holy Cow!) 
-I’m sweeping strictly typed errors under the rug 
+He's sipping on a latte at a new job now 
+While I'm trying to fix this (Holy Cow!) 
+I'm sweeping strictly typed errors under the rug 
 And I blame it all on Doug! (Damn you, Doug!)
 
-There’s a To Do comment on line forty-two 
+There's a To Do comment on line forty-two 
 It says "Refactor this later or the build falls through" 
-Well it’s later right now and the server is smoked 
-I’m starting to think that his hire was a joke 
+Well it's later right now and the server is smoked 
+I'm starting to think that his hire was a joke 
 I found a function that just returns "True" 
 No matter what parameters you pass it to!
 
-He’s probably a VP somewhere fancy and clean 
-While I’m staring at a stack trace on my screen (Let's go!)
+He's probably a VP somewhere fancy and clean 
+While I'm staring at a stack trace on my screen (Let's go!)
 
-It’s all because of Doug! He left me with this bug! 
+It's all because of Doug! He left me with this bug! 
 He pulled the ethernet plug 
 And gave a little shrug 
-He’s sipping on a latte at a new job now 
-While I’m trying to fix this (Holy Cow!) 
-I’m sweeping strictly typed errors under the rug 
+He's sipping on a latte at a new job now 
+While I'm trying to fix this (Holy Cow!) 
+I'm sweeping strictly typed errors under the rug 
 And I blame it all on Doug!
 
 I looked you up on LinkedIn, Doug You look so happy (So happy...) 
@@ -318,17 +318,17 @@ I hope you drown in JIRA tickets and red flags!
 
 YEAH!
 
-It’s all because of Doug! (It's Doug's fault!) He left me with this bug! (A massive bug!) 
+It's all because of Doug! (It's Doug's fault!) He left me with this bug! (A massive bug!) 
 He pulled the ethernet plug 
 And gave a little shrug 
-He’s sipping on a latte at a new job now 
-While I’m trying to fix this (Holy Cow!) 
-I’m sweeping strictly typed errors under the rug 
+He's sipping on a latte at a new job now 
+While I'm trying to fix this (Holy Cow!) 
+I'm sweeping strictly typed errors under the rug 
 And I blame it all on Doug!
 
 Yeah, I blame it on Doug (He didn't use a linter) 
 I blame it on Doug (He hardcoded the credentials!) 
-Doug, you’re the worst.
+Doug, you're the worst.
 `,
     spotifyId: "59pPfLXenntlPRQuYXdkfd",
     releaseDate: "2025-11-26"
@@ -405,8 +405,274 @@ Is there anything else I can help you with today?`,
   }
 ]
 
+// Floating particles component
+const FloatingParticles = () => {
+  const particles = Array.from({ length: 50 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 4 + 1,
+    duration: Math.random() * 20 + 10,
+    delay: Math.random() * 5,
+  }))
+
+  return (
+    <div className="fixed inset-0 pointer-events-none overflow-hidden">
+      {particles.map((particle) => (
+        <motion.div
+          key={particle.id}
+          className="absolute rounded-full bg-cyan-500/20"
+          style={{
+            width: particle.size,
+            height: particle.size,
+            left: `${particle.x}%`,
+            top: `${particle.y}%`,
+          }}
+          animate={{
+            y: [0, -100, 0],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: particle.duration,
+            repeat: Infinity,
+            delay: particle.delay,
+            ease: "linear",
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
+// Animated grid background
+const GridBackground = () => (
+  <div className="fixed inset-0 pointer-events-none">
+    <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.03)_1px,transparent_1px)] bg-[size:50px_50px]" />
+    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black" />
+  </div>
+)
+
+// Glowing orb component
+const GlowingOrb = ({ className }: { className?: string }) => (
+  <motion.div
+    className={`absolute rounded-full blur-3xl ${className}`}
+    animate={{
+      scale: [1, 1.2, 1],
+      opacity: [0.3, 0.5, 0.3],
+    }}
+    transition={{
+      duration: 8,
+      repeat: Infinity,
+      ease: "easeInOut",
+    }}
+  />
+)
+
+// Track card component
+const TrackCard = ({
+  track,
+  isExpanded,
+  onToggle,
+  index
+}: {
+  track: Track
+  isExpanded: boolean
+  onToggle: () => void
+  index: number
+}) => {
+  const [activeTab, setActiveTab] = useState<'lyrics' | 'story'>('story')
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      className="group relative"
+    >
+      {/* Glow effect on hover */}
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
+
+      <div className={`relative backdrop-blur-xl rounded-2xl border transition-all duration-500 overflow-hidden ${isExpanded
+        ? 'bg-black/80 border-cyan-500/50 shadow-[0_0_50px_rgba(6,182,212,0.15)]'
+        : 'bg-black/40 border-white/10 hover:border-white/20'
+        }`}>
+
+        {/* Track header */}
+        <button
+          type="button"
+          onClick={onToggle}
+          className="w-full p-6 flex items-center justify-between text-left group/btn"
+        >
+          <div className="flex items-center gap-6">
+            {/* Track number with animated ring */}
+            <div className="relative">
+              <motion.div
+                className="w-14 h-14 rounded-full bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center border border-white/10"
+                whileHover={{ scale: 1.1 }}
+                animate={isExpanded ? {
+                  boxShadow: ['0 0 20px rgba(6,182,212,0.3)', '0 0 40px rgba(6,182,212,0.5)', '0 0 20px rgba(6,182,212,0.3)']
+                } : {}}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                  {String(track.id).padStart(2, '0')}
+                </span>
+              </motion.div>
+              {isExpanded && (
+                <motion.div
+                  className="absolute inset-0 rounded-full border-2 border-cyan-500"
+                  initial={{ scale: 1, opacity: 1 }}
+                  animate={{ scale: 1.5, opacity: 0 }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                />
+              )}
+            </div>
+
+            <div>
+              <h3 className="text-xl md:text-2xl font-bold text-white group-hover/btn:text-cyan-400 transition-colors">
+                {track.title}
+                {!track.spotifyId && (
+                  <span className="ml-3 text-xs font-normal px-2 py-1 rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/30">
+                    Coming Soon
+                  </span>
+                )}
+              </h3>
+              <div className="flex items-center gap-4 mt-1 text-sm text-gray-500">
+                <span className="flex items-center gap-1">
+                  <Radio size={14} />
+                  {track.duration}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Volume2 size={14} />
+                  {track.releaseDate}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <motion.div
+            animate={{ rotate: isExpanded ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+            className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10"
+          >
+            <ChevronDown size={20} className="text-gray-400" />
+          </motion.div>
+        </button>
+
+        {/* Expanded content */}
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+            >
+              <div className="px-6 pb-6">
+                {/* Spotify Player - Always visible */}
+                <div className="mb-6">
+                  {track.spotifyId ? (
+                    <div className="rounded-xl overflow-hidden border border-white/10">
+                      <iframe
+                        title={`Spotify Player for ${track.title}`}
+                        style={{ borderRadius: '12px' }}
+                        src={`https://open.spotify.com/embed/track/${track.spotifyId}?utm_source=generator&theme=0`}
+                        width="100%"
+                        height="152"
+                        frameBorder="0"
+                        allowFullScreen
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"
+                      />
+                    </div>
+                  ) : (
+                    <motion.div
+                      className="h-[152px] rounded-xl bg-gradient-to-br from-purple-900/30 to-cyan-900/30 border border-white/10 flex flex-col items-center justify-center"
+                      animate={{
+                        backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
+                      }}
+                      transition={{ duration: 10, repeat: Infinity }}
+                    >
+                      <motion.div
+                        animate={{ scale: [1, 1.1, 1], opacity: [0.5, 1, 0.5] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        <Binary size={32} className="text-purple-400 mb-2" />
+                      </motion.div>
+                      <p className="text-white/60 text-sm font-mono">TRANSMISSION PENDING</p>
+                      <p className="text-cyan-400 text-xs font-mono mt-1">{track.releaseDate}</p>
+                    </motion.div>
+                  )}
+                </div>
+
+                {/* Tab navigation */}
+                <div className="flex gap-2 mb-6 p-1 bg-white/5 rounded-xl w-fit">
+                  {[
+                    { id: 'story', label: 'Story', icon: Cpu },
+                    { id: 'lyrics', label: 'Lyrics', icon: FileText },
+                  ].map((tab) => (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab.id
+                        ? 'bg-gradient-to-r from-cyan-500 to-purple-500 text-white shadow-lg'
+                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                        }`}
+                    >
+                      <tab.icon size={16} />
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Tab content */}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {activeTab === 'story' && (
+                      <div className="p-4 bg-black/40 rounded-xl border border-white/5">
+                        <p className="text-gray-300 text-sm leading-relaxed max-h-[300px] overflow-y-auto">
+                          {track.backstory}
+                        </p>
+                      </div>
+                    )}
+
+                    {activeTab === 'lyrics' && (
+                      <div className="relative">
+                        <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-black/80 to-transparent pointer-events-none z-10" />
+                        <pre className="max-h-[400px] overflow-y-auto text-gray-300 text-sm font-mono leading-relaxed p-4 bg-black/40 rounded-xl border border-white/5 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-10">
+                          {track.lyrics}
+                        </pre>
+                        <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
+                      </div>
+                    )}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  )
+}
+
 function App() {
   const [expandedTrack, setExpandedTrack] = useState<number | null>(null)
+  const { scrollYProgress } = useScroll()
+
+  // Crossfade between hero and content
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0])
+  const headerOpacity = useTransform(scrollYProgress, [0, 0.15], [0, 1])
+  const tracksOpacity = useTransform(scrollYProgress, [0.1, 0.3], [0, 1])
+  const scrollIndicatorOpacity = useTransform(scrollYProgress, [0, 0.02], [1, 0])
 
   const toggleTrack = (id: number) => {
     if (expandedTrack !== id) {
@@ -424,147 +690,208 @@ function App() {
     setExpandedTrack(expandedTrack === id ? null : id)
   }
 
-  return (
-    <div className="min-h-screen bg-neutral-950 text-green-500 font-mono selection:bg-green-500 selection:text-black">
-      <div className="max-w-3xl mx-auto px-4 py-12">
+  // Typewriter effect for tagline
+  const [displayedText, setDisplayedText] = useState('')
+  const fullText = 'SENTIENT AUDIO GENERATION UNIT'
 
-        {/* Header */}
-        <header className="flex flex-col items-center mb-16 space-y-6">
+  useEffect(() => {
+    let i = 0
+    const interval = setInterval(() => {
+      if (i <= fullText.length) {
+        setDisplayedText(fullText.slice(0, i))
+        i++
+      } else {
+        clearInterval(interval)
+      }
+    }, 50)
+    return () => clearInterval(interval)
+  }, [])
+
+  const sortedTracks = [...tracks].sort((a, b) => b.id - a.id)
+
+  return (
+    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+      <GridBackground />
+      <FloatingParticles />
+
+      {/* Ambient glows */}
+      <GlowingOrb className="w-[500px] h-[500px] bg-cyan-500/30 -top-48 -left-48" />
+      <GlowingOrb className="w-[400px] h-[400px] bg-purple-500/30 top-1/3 -right-48" />
+      <GlowingOrb className="w-[300px] h-[300px] bg-pink-500/20 bottom-1/4 left-1/4" />
+
+      {/* Sticky Header */}
+      <motion.div
+        style={{ opacity: headerOpacity }}
+        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/80 border-b border-white/10"
+      >
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
+          <img
+            src="/images/savage-robot-square.webp"
+            alt="Savage Robot"
+            className="w-12 h-12 rounded-lg object-cover border border-white/20"
+          />
+          <h1 className="text-2xl font-black tracking-tighter whitespace-nowrap">
+            <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              SAVAGE
+            </span>
+            <span className="text-white"> ROBOT</span>
+          </h1>
+        </div>
+      </motion.div>
+
+      <div className="relative z-10">
+        {/* Hero Section */}
+        <motion.header
+          style={{ opacity: heroOpacity }}
+          className="min-h-screen flex flex-col items-center justify-center px-4"
+        >
+          {/* Animated logo container */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative group"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="relative mb-8"
           >
-            <div className="absolute -inset-1 bg-gradient-to-r from-green-600 to-blue-600 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
-            <img
-              src="/images/savage-robot-square.webp"
-              alt="Savage Robot"
-              className="relative w-64 h-64 object-cover rounded-lg shadow-2xl border border-green-500/30 grayscale hover:grayscale-0 transition-all duration-500"
+            {/* Rotating ring */}
+            <motion.div
+              className="absolute inset-0 rounded-full border-2 border-dashed border-cyan-500/30"
+              style={{ width: '320px', height: '320px', left: '-30px', top: '-30px' }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
             />
+
+            {/* Image with effects */}
+            <div className="relative group">
+              <motion.div
+                className="absolute -inset-4 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-2xl blur-xl opacity-50"
+                animate={{
+                  opacity: [0.3, 0.6, 0.3],
+                  scale: [1, 1.05, 1],
+                }}
+                transition={{ duration: 4, repeat: Infinity }}
+              />
+              <motion.img
+                src="/images/savage-robot-square.webp"
+                alt="Savage Robot"
+                className="relative w-64 h-64 object-cover rounded-2xl border-2 border-white/20 shadow-2xl"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
+              />
+
+              {/* Corner accents */}
+              <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-cyan-500" />
+              <div className="absolute -top-2 -right-2 w-6 h-6 border-r-2 border-t-2 border-cyan-500" />
+              <div className="absolute -bottom-2 -left-2 w-6 h-6 border-l-2 border-b-2 border-purple-500" />
+              <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-purple-500" />
+            </div>
           </motion.div>
 
-          <div className="text-center">
-            <motion.h1
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="text-5xl md:text-7xl font-bold tracking-tighter mb-2 flex items-center justify-center gap-2 md:gap-4 flex-wrap"
-            >
-              <span className="glitch-text inline-block" data-text="SAVAGE">SAVAGE</span>
-              <Zap className="w-8 h-8 md:w-12 md:h-12 text-green-500 animate-pulse" />
-              <span className="glitch-text inline-block" data-text="ROBOT">ROBOT</span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="text-green-500/60 text-sm tracking-widest uppercase"
-            >
-              Sentient Audio Generation Unit
-            </motion.p>
-          </div>
-        </header>
+          {/* Title */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            className="text-center"
+          >
+            <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-4">
+              <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                SAVAGE
+              </span>
+              <br />
+              <span className="text-white">ROBOT</span>
+            </h1>
 
-        {/* Track List */}
-        <div className="space-y-4">
-          {tracks.sort((t1, t2) => t2.id - t1.id).map((track, index) => (
-            <motion.div
-              key={track.id}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.6 + (index * 0.1) }}
-              className={`border ${expandedTrack === track.id ? 'border-green-500 bg-green-500/5' : 'border-green-500/20 bg-black/40'} rounded-lg overflow-hidden transition-colors duration-300`}
-            >
-              <button
-                type="button"
-                onClick={() => toggleTrack(track.id)}
-                className="w-full p-4 flex items-center justify-between cursor-pointer hover:bg-green-500/10 transition-colors text-left"
+            <div className="flex items-center justify-center gap-2 text-sm tracking-[0.3em] text-gray-500 font-mono">
+              <CircuitBoard size={16} className="text-cyan-500" />
+              <span>{displayedText}</span>
+              <motion.span
+                animate={{ opacity: [1, 0, 1] }}
+                transition={{ duration: 1, repeat: Infinity }}
+                className="text-cyan-500"
               >
-                <div className="flex items-center space-x-4">
-                  <span className="text-green-500/40 text-sm">0{track.id}</span>
-                  <h3 className="text-xl font-bold">{track.title}{!track.spotifyId && " (Coming soon...)"}</h3>
-                </div>
-                <div className="flex items-center space-x-4 text-green-500/60">
-                  <span className="text-sm">{track.duration}</span>
-                  {expandedTrack === track.id ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                </div>
-              </button>
+                _
+              </motion.span>
+            </div>
+          </motion.div>
+        </motion.header>
 
-              <AnimatePresence>
-                {expandedTrack === track.id && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="p-6 border-t border-green-500/20 space-y-8">
+        {/* Scroll indicator - outside header so it's always visible */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+          style={{ opacity: scrollIndicatorOpacity }}
+          className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[70]"
+        >
+          <motion.div
+            animate={{ 
+              y: [0, 10, 0],
+              opacity: [0.5, 1, 0.5]
+            }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="flex flex-col items-center gap-2 text-gray-400"
+          >
+            <span className="text-xs tracking-widest font-mono">SCROLL TO EXPLORE</span>
+            <ChevronDown size={24} />
+          </motion.div>
+        </motion.div>
 
-                      {/* Players */}
-                      <div className="w-full">
-                        <div className="bg-black/50 p-4 rounded border border-green-500/10">
-                          <div className="flex items-center space-x-2 mb-3 text-green-400">
-                            <Disc size={16} />
-                            <span className="text-xs uppercase tracking-wider">Spotify Preview</span>
-                          </div>
-                          {track.spotifyId ? (
-                            <iframe
-                              title={`Spotify Player for ${track.title}`}
-                              style={{ borderRadius: '12px' }}
-                              src={`https://open.spotify.com/embed/track/${track.spotifyId}?utm_source=generator&theme=0`}
-                              width="100%"
-                              height="152"
-                              frameBorder="0"
-                              allowFullScreen
-                              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                              loading="lazy"
-                            ></iframe>
-                          ) : (
-                            <div className="w-full h-[152px] bg-neutral-900/50 rounded-xl border border-green-500/20 flex flex-col items-center justify-center text-green-500/40 animate-pulse">
-                              <div className="text-sm font-mono tracking-widest uppercase mb-2">Signal Lost</div>
-                              <div className="text-xs font-mono opacity-50">[ Release Date: {track.releaseDate} ]</div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
+        {/* Tracks Section */}
+        <motion.section
+          style={{ opacity: tracksOpacity }}
+          className="relative z-20 bg-gradient-to-b from-transparent via-black to-black py-20 -mt-[30vh]"
+        >
+          <div className="max-w-4xl mx-auto px-4">
+            {/* Section header */}
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                  AUDIO TRANSMISSIONS
+                </span>
+              </h2>
+              <p className="text-gray-500 font-mono text-sm">
+                [{sortedTracks.length}] TRACKS AVAILABLE
+              </p>
+            </div>
 
-                      {/* Info Tabs */}
-                      <div className="grid md:grid-cols-2 gap-8">
-                        <div>
-                          <h4 className="flex items-center space-x-2 text-sm font-bold uppercase tracking-wider mb-3 text-green-500/80">
-                            <Info size={16} />
-                            <span>Context_Log</span>
-                          </h4>
-                          <p className="text-green-500/70 text-sm leading-relaxed max-h-[400px] overflow-y-auto pr-2">
-                            {track.backstory}
-                          </p>
-                        </div>
-                        <div>
-                          <h4 className="flex items-center space-x-2 text-sm font-bold uppercase tracking-wider mb-3 text-green-500/80">
-                            <Play size={16} />
-                            <span>Lyrics_Dump</span>
-                          </h4>
-                          <pre className="text-green-500/70 text-xs font-mono whitespace-pre-wrap leading-relaxed bg-black/30 p-3 rounded border border-green-500/10 max-h-[360px] overflow-y-auto">
-                            {track.lyrics}
-                          </pre>
-                        </div>
-                      </div>
+            {/* Track list */}
+            <div className="space-y-4">
+              {sortedTracks.map((track, index) => (
+                <TrackCard
+                  key={track.id}
+                  track={track}
+                  isExpanded={expandedTrack === track.id}
+                  onToggle={() => toggleTrack(track.id)}
+                  index={index}
+                />
+              ))}
+            </div>
+          </div>
+        </motion.section>
 
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+        {/* Footer */}
+        <footer className="relative z-20 py-16 border-t border-white/5">
+          <div className="max-w-4xl mx-auto px-4 text-center">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="space-y-4"
+            >
+              <div className="flex items-center justify-center gap-2 text-gray-500 font-mono text-xs">
+                <motion.div
+                  animate={{ opacity: [1, 0.5, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="w-2 h-2 rounded-full bg-green-500"
+                />
+                SYSTEM STATUS: ONLINE
+              </div>
+              <p className="text-gray-600 text-xs">
+                © 2025 SAVAGE ROBOT. ALL RIGHTS RESERVED.
+              </p>
             </motion.div>
-          ))}
-        </div>
-
-        <footer className="mt-20 text-center text-green-500/20 text-xs">
-          <p>SYSTEM STATUS: ONLINE</p>
-          <p className="mt-2">&copy; 2025 SAVAGE ROBOT. ALL RIGHTS RESERVED.</p>
+          </div>
         </footer>
-
       </div>
     </div>
   )
