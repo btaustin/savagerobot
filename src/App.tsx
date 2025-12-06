@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
-import { ChevronDown, Music2, FileText, Radio, Volume2, Cpu, Binary, CircuitBoard } from 'lucide-react'
+import { ChevronDown, FileText, Radio, Volume2, Cpu, Binary, CircuitBoard } from 'lucide-react'
 
 interface Track {
   id: number
@@ -824,7 +824,7 @@ function App() {
           className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[70]"
         >
           <motion.div
-            animate={{ 
+            animate={{
               y: [0, 10, 0],
               opacity: [0.5, 1, 0.5]
             }}
