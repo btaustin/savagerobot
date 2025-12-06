@@ -710,7 +710,7 @@ function App() {
   const sortedTracks = [...tracks].sort((a, b) => b.id - a.id)
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+    <div className="min-h-screen bg-black text-white overflow-x-hidden w-full max-w-[100vw]">
       <GridBackground />
       <FloatingParticles />
 
